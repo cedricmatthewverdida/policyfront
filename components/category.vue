@@ -1,7 +1,7 @@
 <template>
   
   <v-data-table
-    :loading="categories.length == 0"
+    :loading="load"
     :headers="headers"
     :items="categories"
     :search="search"
@@ -33,6 +33,7 @@
               v-bind="attrs"
               v-on="on"
               style="text-transform:none;"
+              :disabled="categories.length == 0"
             >
               <v-icon small class="mr-2">
                   mdi-pen
@@ -141,6 +142,7 @@
   import _ from 'lodash'
   export default {
     data: () => ({
+      load:false,
       dialog: false,
       dialogDelete: false,
       search: '',
@@ -189,9 +191,15 @@
     
 
       async load_categories () {
+          this.load = true;
           const send = await this.$axios.get('/backend/category');
-          const respond = await send.data
-          this.categories = respond.data
+          if(send.status == 200){
+            const respond = await send.data
+            this.categories = respond.data
+            this.load = false;
+          }else{
+            alert("Failed Loading Please Reload");
+          }
       },
 
       editItem (item) {

@@ -62,9 +62,8 @@ export default {
   },
 
   proxy: {
-    '/backend': { target: 'http://127.0.0.1:8000/api/', pathRewrite: {'^/backend': ''} }
+    '/backend': { target: 'https://fast-everglades-24609.herokuapp.com/api/', pathRewrite: {'^/backend': ''} }
   },
-
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -87,5 +86,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+  ssr:false
 }

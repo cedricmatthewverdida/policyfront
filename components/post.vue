@@ -1,7 +1,7 @@
 <template>
   
   <v-data-table
-    :loading="policies.length == 0"
+    :loading="load"
     :headers="headers"
     :items="policies"
     :search="search"
@@ -31,6 +31,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
+              :disabled="policies.length == 0"
               depressed
               rounded
               class="primary mb-2"
@@ -172,6 +173,7 @@
     data: () => ({
       dialog: false,
       dialogDelete: false,
+      load:false,
       search: '',
       headers: [
         {
@@ -229,9 +231,16 @@
 
     
       async load_policies () {
+          this.load = true;
           const send = await this.$axios.get('/backend/post');
-          const respond = await send.data
-          this.policies = respond.data
+          if(send.status == 200){
+            const respond = await send.data
+            this.policies = respond.data
+            this.load = false;
+            this.load_categories();
+          }else{
+            alert("Failed Loading Please Reload");
+          }
       },
 
       async load_categories () {
@@ -329,7 +338,6 @@
 
     created(){
         this.load_policies();
-        this.load_categories();
     }
   }
 </script>
