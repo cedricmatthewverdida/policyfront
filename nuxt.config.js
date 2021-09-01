@@ -60,14 +60,16 @@ export default {
         url: 'https://fast-everglades-24609.herokuapp.com',
         endpoints:{
           login:{
-            url: '/api/login'
+            url: '/api/login',
+            propertyName: 'token'
           },
           logout:{
             method: 'post',
             url: '/api/logout'
           },
           user:{
-            url: '/api/user'
+            url: '/api/user',
+            propertyName: 'auth'
           }
         },
         user:{
