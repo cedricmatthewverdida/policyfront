@@ -46,7 +46,7 @@ export default {
   axios: {
     proxy: true,
     credentials: true,
-    baseURL:"https://fast-everglades-24609.herokuapp.com/api/"
+    baseURL:"http://127.0.0.1:8000/api/"
   },
 
   router: {
@@ -57,25 +57,21 @@ export default {
     strategies: {
       laravelSanctum: {
         provider: 'laravel/sanctum',
-        url: 'https://fast-everglades-24609.herokuapp.com',
+        url: 'http://127.0.0.1:8000',
         endpoints:{
           login:{
-            method: 'post',
-            url: '/api/login',
-            propertyName: 'token'
+            url: '/api/admin/login',
           },
           logout:{
             method: 'post',
-            url: '/api/logout'
+            url: '/api/admin/logout'
           },
           user:{
-            method: 'post',
-            url: '/api/user',
-            propertyName: 'auth'
+            url: '/api//user',
           }
         },
         user:{
-          property:Array
+          property:false
         }
       }
     },
@@ -89,7 +85,7 @@ export default {
   
 
   proxy: {
-    '/backend': { target: 'https://fast-everglades-24609.herokuapp.com/api/', pathRewrite: {'^/backend': ''} }
+    '/backend': { target: 'http://127.0.0.1:8000/api/', pathRewrite: {'^/backend': ''} }
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
