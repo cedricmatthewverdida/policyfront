@@ -71,7 +71,7 @@ export default {
           }
         },
         user:{
-          property:false
+          property:"token"
         }
       }
     },
