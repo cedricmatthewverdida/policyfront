@@ -71,7 +71,7 @@ export default {
           }
         },
         user:{
-          property:"token"
+          property:"auth"
         }
       }
     },
