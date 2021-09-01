@@ -40,26 +40,49 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth-next'
   ],
+
+  axios: {
+    proxy: true,
+    credentials: true,
+    baseURL:"https://fast-everglades-24609.herokuapp.com/api/"
+  },
+
+  router: {
+    middleware: ['auth']
+  },
 
   auth: {
     strategies: {
-      local: {
-        endpoints: {
-          login: { url: '/backend/login', method: 'post', propertyName: 'token' },
-          logout: { url: '/backend/logout', method: 'post' },
-          user: { url: '/backend/user', method: 'get' , propertyName: 'auth'}
+      laravelSanctum: {
+        provider: 'laravel/sanctum',
+        url: 'https://fast-everglades-24609.herokuapp.com',
+        endpoints:{
+          login:{
+            url: '/api/login'
+          },
+          logout:{
+            method: 'post',
+            url: '/api/logout'
+          },
+          user:{
+            url: '/api/user'
+          }
         },
-      },
-      tokenType: '',
+        user:{
+          property:false
+        }
+      }
     },
-    redirect: {
-      home: false,
-      callback: false,
-      logout: false
+
+    redirects: {
+      login: '/login',
+      logout: '/login',
+      home: '/'
     }
   },
+  
 
   proxy: {
     '/backend': { target: 'https://fast-everglades-24609.herokuapp.com/api/', pathRewrite: {'^/backend': ''} }
@@ -86,6 +109,5 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  },
-  ssr:false
+  }
 }

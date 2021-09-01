@@ -66,7 +66,7 @@
       async loginUser(loginInfo){
         
         try{
-          await this.$auth.loginWith('local',{
+          await this.$auth.loginWith('laravelSanctum',{
             data: loginInfo
           })
           this.text = "Login successfuly!"
@@ -108,4 +108,5 @@
 
 .home-enter-active, .home-leave-active { transition: opacity .5s; }
 .home-enter, .home-leave-active { opacity: 0; }
+
 </style>
