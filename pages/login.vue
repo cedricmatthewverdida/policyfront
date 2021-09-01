@@ -66,7 +66,7 @@
       async loginUser(loginInfo){
         
         try{
-          await this.$auth.loginWith('local',{
+          await this.$auth.loginWith('laravelSanctum',{
             data: loginInfo
           })
           this.text = "Login successfuly!"
