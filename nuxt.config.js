@@ -71,7 +71,7 @@ export default {
           }
         },
         user:{
-          property:"auth"
+          method: 'get' , propertyName: 'auth'
         }
       }
     },
