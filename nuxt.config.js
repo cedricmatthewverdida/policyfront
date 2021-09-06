@@ -55,32 +55,17 @@ export default {
 
   auth: {
     strategies: {
-      laravelSanctum: {
+      'laravelSanctum': {
         provider: 'laravel/sanctum',
         url: 'https://fast-everglades-24609.herokuapp.com',
         endpoints:{
           login:{
-            url: '/api/admin/login',
-          },
-          logout:{
-            method: 'post',
-            url: '/api/admin/logout'
-          },
-          user:{
-            url: '/api//user',
+            url: '/api/login',
           }
         },
-        user:{
-          property:false
-        }
       }
     },
 
-    redirects: {
-      login: '/login',
-      logout: '/login',
-      home: '/'
-    }
   },
   
 
