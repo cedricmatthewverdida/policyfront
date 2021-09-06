@@ -46,7 +46,11 @@ export default {
   axios: {
     proxy: true,
     credentials: true,
-    baseURL:"https://fast-everglades-24609.herokuapp.com/api/"
+    baseURL:"https://fast-everglades-24609.herokuapp.com/api/",
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
   },
 
   router: {
