@@ -275,7 +275,7 @@
         })
       },
 
-      save () {
+      async save () {
         if (this.editedIndex > -1) {
           if(this.update_data()) {
             Object.assign(this.categories[this.editedIndex], this.editedItem)
@@ -283,7 +283,8 @@
             alert('Failed to Update')
           }
         } else {
-          if(this.save_data() == 200){
+          const save = await this.save_data()
+          if(save == "Success"){
           this.categories.push(this.editedItem)
           }else{
             alert("Failed to Register")
@@ -299,7 +300,10 @@
             password: this.editedItem.password,
             role: this.editedItem.role,
         })
-        const response = await send.status
+        const response = await send.data
+
+        console.log(response);
+
         return response
       },
 

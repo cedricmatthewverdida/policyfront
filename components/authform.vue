@@ -51,8 +51,8 @@
             valid: false,
             passwordType: false,
             userInfo : {
-                email: 'test@gmail.com',
-                password: 'test',
+                email: '',
+                password: '',
             },
             
             nameRules: [

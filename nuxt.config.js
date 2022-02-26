@@ -57,28 +57,28 @@ export default {
     middleware: ['auth']
   },
 
+  proxy: {
+    '/backend': { target: 'http://127.0.0.1:8000/api/', pathRewrite: {'^/backend': ''} },
+  },
+
   auth: {
     strategies: {
-      'laravelSanctum': {
-        provider: 'laravel/sanctum',
-        url: 'https://fast-everglades-24609.herokuapp.com',
-        endpoints:{
-          login:{
-            url: '/api/login',
-          },
-          user:{
-            url: '/api/user',
-          }
+      local: {
+        endpoints: {
+          login: { url: '/backend/login', method: 'post', propertyName: 'token' },
+          logout: { url: '/backend/logout', method: 'post' },
+          user: { url: '/backend/verify', method: 'get' , propertyName: 'user'}
         },
-      }
+      },
+      tokenType: '',
     },
-
+    redirect: {
+      home: false,
+      callback: false,
+      logout: false
+    }
   },
-  
 
-  proxy: {
-    '/backend': { target: 'https://fast-everglades-24609.herokuapp.com/api/', pathRewrite: {'^/backend': ''} }
-  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
