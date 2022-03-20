@@ -39,7 +39,59 @@
       </v-card-title>
 
       <v-card-text class="pa-5" v-html="marked(post.body)"/>
+      <v-card-actions>
+        <v-btn style="text-transform: none;" text @click="opencomment(post)">
+            <v-icon class="mr-2">
+              mdi-comment-outline
+            </v-icon>
+            Comment
+        </v-btn>
+      </v-card-actions>
     </v-card>
+
+    <v-dialog
+        transition="dialog-bottom-transition"
+        max-width="600"
+        v-model="opendialog"
+      >
+        <v-card>
+          <v-card-title>
+            {{post.title}}
+          </v-card-title>
+          <v-card-subtitle>
+            {{commentsObj.length}} Comments
+          </v-card-subtitle>
+          <v-card-text>
+
+            <v-text-field
+            v-model="comment"
+            label="Add Comment"
+            filled
+            rounded
+            v-on:keyup.enter="createComment()"
+            />
+
+
+            <div v-for="(item,key) in commentsObj" :key="key">
+              <v-card outlined class="card my-2">
+                <v-card-title>
+                  {{item.name}}
+                </v-card-title>
+                <v-card-text class="pa-5">
+                  {{item.body}}
+                </v-card-text>
+              </v-card>
+            </div>
+
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn
+              text
+              @click="opendialog = false"
+            >Close</v-btn>
+          </v-card-actions>
+        </v-card>
+    </v-dialog>
 
 
   </div>
@@ -54,10 +106,46 @@
     data: () => ({
       categories: [],
       policies: [],
-      loaded: []
+      loaded: [],
+      opendialog: false,
+      post: [],
+      comment: '',
+      commentsObj: []
     }),
 
     methods:{
+
+      async createComment () {
+        const send = await this.$axios.post('/backend/comment',{
+          postid: this.post.id,
+          name: this.$auth.user.email,
+          body: this.comment
+        });
+
+        if(send.status == 200){
+          this.commentsObj.unshift({
+            postid: this.post.id,
+            name: this.$auth.user.email,
+            body: this.comment
+          })
+        }else{
+          alert("Failed to comment");
+        }
+      },
+
+      async viewComment (id){
+        const comments = await this.$axios.get('/backend/comment/'+ id);
+        if(comments.status == 200){
+          const response = await comments.data;
+          this.commentsObj = response.data
+        }
+      },
+
+      opencomment : function (obj){
+        this.opendialog = true;
+        this.post = obj;
+        this.viewComment(obj.id)
+      },
 
       async init_policies(){
         const call = await this.$axios.get('/backend/post')
@@ -77,9 +165,8 @@
       },
 
       load_post : function (id) {
-        const post =  this.policies.filter(key => key.category == id)
-       
-        this.loaded = post
+        const post =  this.policies.filter(key => key.category == id);
+        this.loaded = post;
       },
 
       loadall : function (){ 
@@ -99,3 +186,12 @@
     
   }
 </script>
+<style scoped>
+.card {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 12px;
+    border: 1px solid rgba(209, 213, 219, 0.3);
+}
+</style>

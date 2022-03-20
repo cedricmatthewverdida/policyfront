@@ -33,7 +33,6 @@
               v-bind="attrs"
               v-on="on"
               style="text-transform:none;"
-              :disabled="categories.length == 0"
             >
               <v-icon small class="mr-2">
                   mdi-pen

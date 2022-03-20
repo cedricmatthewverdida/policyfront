@@ -31,7 +31,6 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              :disabled="policies.length == 0"
               depressed
               rounded
               class="primary mb-2"
@@ -228,7 +227,6 @@
     },
 
     methods: {
-
     
       async load_policies () {
           this.load = true;
