@@ -1,6 +1,5 @@
 <template>
 
-
   <div>
     <v-card
     class="pa-2"
@@ -18,7 +17,36 @@
       show-arrows
       >
         <v-tab style="text-transform:none;" @click="loadall()">All</v-tab>
-        <v-tab class="caption" style="text-transform:none;" v-for="(cat,key) in categories" :key="key" @click="load_post(cat.id)">{{cat.name}}</v-tab>
+        <v-tab
+          class="caption"
+          style="text-transform:none;"
+          v-for="(cat,key) in categories"
+          :key="key"
+          @click="load_post(cat.id)"
+        >
+            <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                text
+                v-bind="attrs"
+                v-on="on"
+                block 
+              >
+                {{cat.name}}
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(item, index) in loaded"
+                :key="index"
+                @click="openpolicy(item)"
+              >
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+            
+        </v-tab>
       </v-tabs>
     </v-card>
 
@@ -93,6 +121,42 @@
         </v-card>
     </v-dialog>
 
+    <v-dialog
+        transition="dialog-bottom-transition"
+        max-width="600"
+        v-model="openpost"
+      >
+        <v-card>
+
+              <v-card
+              outlined
+              elevation="0"
+              v-if="post.length != 0"
+              >
+                <v-card-title class="overline">
+                  {{post.title}}
+                </v-card-title>
+
+                <v-card-text class="pa-5" v-html="marked(post.body)"/>
+                <v-card-actions>
+                  <v-btn style="text-transform: none;" text @click="opencomment(post)">
+                      <v-icon class="mr-2">
+                        mdi-comment-outline
+                      </v-icon>
+                      Comment
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+
+          <v-card-actions class="justify-end">
+            <v-btn
+              text
+              @click="openpost = false"
+            >Close</v-btn>
+          </v-card-actions>
+        </v-card>
+    </v-dialog>
+
 
   </div>
 
@@ -108,9 +172,11 @@
       policies: [],
       loaded: [],
       opendialog: false,
+      openpost: false,
       post: [],
       comment: '',
-      commentsObj: []
+      commentsObj: [],
+      
     }),
 
     methods:{
@@ -145,6 +211,11 @@
         this.opendialog = true;
         this.post = obj;
         this.viewComment(obj.id)
+      },
+
+      openpolicy : function (obj){
+        this.openpost = true;
+        this.post = obj;
       },
 
       async init_policies(){
